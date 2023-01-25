@@ -1,0 +1,626 @@
+BST
+
+// Java program to demonstrate
+// insert operation in binary
+// search tree
+class BinarySearchTree {
+
+	/* Class containing left
+	and right child of current node
+	* and key value*/
+	class Node {
+		int key;
+		Node left, right;
+
+		public Node(int item)
+		{
+			key = item;
+			left = right = null;
+		}
+	}
+
+	// Root of BST
+	Node root;
+
+	// Constructor
+	BinarySearchTree() { root = null; }
+
+	BinarySearchTree(int value) { root = new Node(value); }
+
+	// This method mainly calls insertRec()
+	void insert(int key) { root = insertRec(root, key); }
+
+	/* A recursive function to
+	insert a new key in BST */
+	Node insertRec(Node root, int key)
+	{
+
+		/* If the tree is empty,
+		return a new node */
+		if (root == null) {
+			root = new Node(key);
+			return root;
+		}
+
+		/* Otherwise, recur down the tree */
+		else if (key < root.key)
+			root.left = insertRec(root.left, key);
+		else if (key > root.key)
+			root.right = insertRec(root.right, key);
+
+		/* return the (unchanged) node pointer */
+		return root;
+	}
+
+	// This method mainly calls InorderRec()
+	void inorder() { inorderRec(root); }
+
+	// A utility function to
+	// do inorder traversal of BST
+	void inorderRec(Node root)
+	{
+		if (root != null) {
+			inorderRec(root.left);
+			System.out.println(root.key);
+			inorderRec(root.right);
+		}
+	}
+
+	// Driver Code
+	public static void main(String[] args)
+	{
+		BinarySearchTree tree = new BinarySearchTree();
+
+		/* Let us create following BST
+			50
+		/	 \
+		30	 70
+		/ \ / \
+	20 40 60 80 */
+		tree.insert(50);
+		tree.insert(30);
+		tree.insert(20);
+		tree.insert(40);
+		tree.insert(70);
+		tree.insert(60);
+		tree.insert(80);
+
+		// print inorder traversal of the BST
+		tree.inorder();
+	}
+}
+
+
+
+Stack Using Queue
+
+/* Java Program to implement a stack using
+two queue */
+import java.util.*;
+
+class GfG {
+
+	static class Stack {
+		// Two inbuilt queues
+		static Queue<Integer> q1
+			= new LinkedList<Integer>();
+		static Queue<Integer> q2
+			= new LinkedList<Integer>();
+
+		// To maintain current number of
+		// elements
+		static int curr_size;
+
+		static void push(int x)
+		{
+			// Push x first in empty q2
+			q2.add(x);
+
+			// Push all the remaining
+			// elements in q1 to q2.
+			while (!q1.isEmpty()) {
+				q2.add(q1.peek());
+				q1.remove();
+			}
+
+			// swap the names of two queues
+			Queue<Integer> q = q1;
+			q1 = q2;
+			q2 = q;
+		}
+
+		static void pop()
+		{
+
+			// if no elements are there in q1
+			if (q1.isEmpty())
+				return;
+			q1.remove();
+		}
+
+		static int top()
+		{
+			if (q1.isEmpty())
+				return -1;
+			return q1.peek();
+		}
+
+		static int size() { return q1.size(); }
+	}
+
+	// driver code
+	public static void main(String[] args)
+	{
+		Stack s = new Stack();
+		s.push(1);
+		s.push(2);
+		s.push(3);
+
+		System.out.println("current size: " + s.size());
+		System.out.println(s.top());
+		s.pop();
+		System.out.println(s.top());
+		s.pop();
+		System.out.println(s.top());
+
+		System.out.println("current size: " + s.size());
+	}
+}
+// This code is contributed by Prerna
+
+
+
+
+Queue Using stack
+
+// Java program to implement Queue using
+// two stacks with costly enQueue()
+import java.util.*;
+
+class GFG
+{
+static class Queue
+{
+	static Stack<Integer> s1 = new Stack<Integer>();
+	static Stack<Integer> s2 = new Stack<Integer>();
+
+	static void enQueue(int x)
+	{
+		// Move all elements from s1 to s2
+		while (!s1.isEmpty())
+		{
+			s2.push(s1.pop());
+			//s1.pop();
+		}
+
+		// Push item into s1
+		s1.push(x);
+
+		// Push everything back to s1
+		while (!s2.isEmpty())
+		{
+			s1.push(s2.pop());
+			//s2.pop();
+		}
+	}
+
+	// Dequeue an item from the queue
+	static int deQueue()
+	{
+		// if first stack is empty
+		if (s1.isEmpty())
+		{
+			System.out.println("Q is Empty");
+			System.exit(0);
+		}
+
+		// Return top of s1
+		int x = s1.peek();
+		s1.pop();
+		return x;
+	}
+};
+
+// Driver code
+public static void main(String[] args)
+{
+	Queue q = new Queue();
+	q.enQueue(1);
+	q.enQueue(2);
+	q.enQueue(3);
+
+	System.out.println(q.deQueue());
+	System.out.println(q.deQueue());
+	System.out.println(q.deQueue());
+}
+}
+
+// This code is contributed by Prerna Saini
+
+
+
+
+Brute Force
+
+public class bruteforce {
+
+	public static int bruteforce(String text, String tobematched) {
+		int length = text.length();// length of the text
+		int plength = tobematched.length();// length of the pattern;
+
+		// loop condition
+		for (int i = 0; i < length - plength; i++) {
+			// initialization of j
+			int j = 0;
+			while ((j < plength) && (text.charAt(i + j) == tobematched.charAt(j))) {
+				j++;
+			}
+			if (j == plength) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	public static void main(String[] args) {
+		bruteforce obj = new bruteforce();
+		// text
+		String text = "I Love Programming and I do Programming";
+		// word that want to be matched in the text
+		String tobematched = "Programming";
+		// calling the function
+		int position = obj.bruteforce(text, tobematched);
+		int endindex = position + 1;
+		// condition to check whether the pattern is matched are not
+		if (position == -1) {
+			System.out.println("Pattern is not matched in the text");
+		} else {
+			System.out.println("Found at position:" + (position + 1));
+			System.out.println("End at the position:" + (endindex + tobematched.length()));
+		}
+
+	}
+}
+
+
+Linear Probing
+
+class lprob {
+    static void display(int arr[]) {
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+    }
+
+    static void hashing(int table[], int tsize, int arr[], int n) {
+        for (int i = 0; i < n; i++) {
+            int hv = arr[i] % tsize;
+            if (table[hv] == -1) {
+                table[hv] = arr[i];
+            } else {
+                for (int j = 0; j < tsize; j++) {
+                    int t = (hv + j) % tsize;
+                    if (table[t] == -1) {
+                        table[t] = arr[i];
+                        break;
+                    }
+                }
+            }
+
+        }
+        display(table);
+    }
+
+    public static void main(String[] args) {
+        int arr[] = { 50, 700, 58, 47, 26 };
+        int n = 5;
+        int l = 5;
+        int hash_table[] = new int[l];
+        for (int i = 0; i < l; i++) {
+            hash_table[i] = -1;
+        }
+        hashing(hash_table, l, arr, n);
+    }
+}
+
+
+
+
+Quadrating Probing
+
+class qprob {
+    static void display(int arr[]) {
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+    }
+
+    static void hashing(int table[], int tsize, int arr[], int n) {
+        for (int i = 0; i < n; i++) {
+            int hv = arr[i] % tsize;
+            if (table[hv] == -1) {
+                table[hv] = arr[i];
+            } else {
+                for (int j = 0; j < tsize; j++) {
+                    int t = (hv + j * j) % tsize;
+                    if (table[t] == -1) {
+                        table[t] = arr[i];
+                        break;
+                    }
+                }
+            }
+
+        }
+        display(table);
+    }
+
+    public static void main(String[] args) {
+        int arr[] = { 50, 700, 76, 85, 92, 73, 101 };
+        int n = 7;
+        int l = 7;
+        int hash_table[] = new int[l];
+        for (int i = 0; i < l; i++) {
+            hash_table[i] = -1;
+        }
+        hashing(hash_table, l, arr, n);
+    }
+}
+
+
+
+
+
+BFS
+
+import java.util.*;
+
+public class BFS {
+	static int[][] adjmat;
+	static int vertex;
+	
+	static void bfs(int start,boolean[] visited) {
+    
+        List<Integer> q = new ArrayList<>();
+        q.add(start);
+        visited[start] = true;
+ 
+        int vis;
+        while (!q.isEmpty()){
+            vis = q.get(0);
+            System.out.print(vis + " ");
+            q.remove(q.get(0));
+            for(int i = 0; i < vertex; i++){
+                if (adjmat[vis][i] == 1 && (!visited[i])){
+                    q.add(i);
+                    visited[i] = true;
+                }
+            }
+        }
+    }
+
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("No. of edges:");
+		int edges =sc.nextInt();
+		System.out.println("No. of vertex:");
+		vertex =sc.nextInt();
+		adjmat=new int[vertex][vertex];
+		System.out.println("enter the connecting nodes: ");
+		for(int i=0;i<edges;i++) {
+			int r= sc.nextInt();
+			int c = sc.nextInt();
+			adjmat[r][c]=1;
+			adjmat[c][r]=1;
+		}
+		boolean[] visited = new boolean[vertex];
+		System.out.println("enter the connecting nodes: ");
+		int s = sc.nextInt();
+		bfs(s,visited);
+		
+
+	}
+
+}
+
+
+
+DFS
+
+import java.util.*;
+public class DFS {
+	static int[][] adjmat;
+	
+	static void dfs(int start, boolean[] visited) 
+	{
+		System.out.print(start + " ");
+        visited[start] = true;
+        
+        for (int i = 0; i < adjmat[start].length; i++) 
+        {
+            if (adjmat[start][i] == 1 && (!visited[i])) 
+            {
+                dfs(i, visited);
+            }
+        }
+    }
+	
+	public static void main(String args[]) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("No. of edges:");
+		int edges =sc.nextInt();
+		System.out.println("No. of vertex:");
+		int vertex =sc.nextInt();
+		adjmat=new int[vertex][vertex];
+		System.out.println("Enter the connecting nodes: ");
+		for(int i=0;i<edges;i++) {
+			int r= sc.nextInt();
+			int c = sc.nextInt();
+			adjmat[r][c]=1;
+			adjmat[c][r]=1;
+		}
+		boolean[] visited = new boolean[vertex];
+		System.out.println("Enter the start node:");
+		int s = sc.nextInt();
+		dfs(s,visited);
+			}
+		}
+
+
+
+
+Sparse Matrix using Array
+
+import java.util.Scanner;
+public class Sparse
+{
+    public static void main(String args[])
+    {
+ 	int i, j, zero = 0, count = 0; 
+ 	int array[][] = new int[10][10];
+ 	System.out.println("Enter total rows and columns: ");
+ 	Scanner s = new Scanner(System.in);
+ 	int row = s.nextInt();
+ 	int column = s.nextInt();
+ 	System.out.println("Enter matrix:");
+        for(i = 0; i < row; i++)
+        {
+            for(j = 0; j < column; j++) 
+    	    {
+                 array[i][j] = s.nextInt();
+                 System.out.print(" ");
+    	     }
+        }
+        for(i = 0; i < row; i++)
+        {
+ 	    for(j = 0; j < column; j++) 
+  	    {
+                if(array[i][j] == 0)
+    		{
+        	    zero++; 
+    		}
+    	   	else
+            	{
+      	            count++;
+    	    	}
+   	   }
+       }
+       if(zero>count)
+       {
+           System.out.println("the matrix is sparse matrix");
+       }
+       else
+       {
+           System.out.println("the matrix is not a sparse matrix");
+       }
+    }
+}
+
+
+
+
+Sparse matrx using Linked list
+
+// Java program for sparse matrix representation.
+// Using Link list
+import java.util.*;
+
+public class SparseMatrix {
+	// Creating head/first node of list as NULL
+	static Node first = null;
+
+	// Node class to represent link list
+	public static class Node {
+		int row;
+		int col;
+		int data;
+		Node next;
+	};
+
+	// Driver Code
+	public static void main(String[] args)
+	{
+		// 4x5 sparse matrix
+		int[][] sparseMatrix = { { 0, 0, 3, 0, 4 },
+								{ 0, 0, 5, 7, 0 },
+								{ 0, 0, 0, 0, 0 },
+								{ 0, 2, 6, 0, 0 } };
+
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 5; j++) {
+				// Pass only those values which
+				// are non - zero
+				if (sparseMatrix[i][j] != 0) {
+					create_new_node(i, j,
+									sparseMatrix[i][j]);
+				}
+			}
+		}
+		printList(first);
+	}
+	// Function to create new node
+	private static void
+	create_new_node(int row_index, int col_index, int x)
+	{
+		Node temp = first;
+		Node r;
+
+		// If link list is empty then
+		// create first node and assign value.
+		if (temp == null) {
+			temp = new Node();
+			temp.row = row_index;
+			temp.col = col_index;
+			temp.data = x;
+			temp.next = null;
+			first = temp;
+		}
+
+		// If link list is already created
+		// then append newly created node
+		else {
+			while (temp.next != null)
+				temp = temp.next;
+
+			r = new Node();
+			r.row = row_index;
+			r.col = col_index;
+			r.data = x;
+			r.next = null;
+			temp.next = r;
+		}
+	}
+
+	// Function prints contents of linked list
+	// starting from start
+	public static void printList(Node start)
+	{
+		Node ptr = start;
+		System.out.print("row_position:");
+		while (ptr != null) {
+			System.out.print(ptr.row + " ");
+			ptr = ptr.next;
+		}
+		System.out.println("");
+		System.out.print("column_position:");
+
+		ptr = start;
+		while (ptr != null) {
+			System.out.print(ptr.col + " ");
+			ptr = ptr.next;
+		}
+		System.out.println("");
+		System.out.print("Value:");
+		ptr = start;
+
+		while (ptr != null) {
+			System.out.print(ptr.data + " ");
+			ptr = ptr.next;
+		}
+	}
+}
+
+// This code is contributed by Tapesh (tapeshdua420)
+
